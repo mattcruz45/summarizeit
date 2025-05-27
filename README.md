@@ -68,3 +68,20 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+
+
+_____________________________________________________________________________
+
+
+
+book summary app
+title, author, year published, specific chapter/section, length of summary, how detailed, any extra suggestions (speak like yoda)
+past 5 summaries generated
+
+to do
+4 detail levels - low (250), med (500), high (1000), super high (2000)
+add language option
+add option to give characters, important themes, etc
+add option for by chapter or section
