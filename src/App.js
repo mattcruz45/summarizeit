@@ -3,6 +3,8 @@ import './App.css';
 import axios from 'axios';
 import logoDefault from './images/summarizelogo.png';
 import logoThink from './images/summarizethink.png';
+import infoIcon from './images/infoicon.png';
+
 
 
 function App() {
@@ -17,6 +19,8 @@ function App() {
   const [loading, setLoading] = useState(false); //used in api
 
   const [requiredFields, setRequiredFields] = useState(false); //see if all required fields are filled in
+
+  const wordcountIconText = "Default value is 500 words\nThe average person reads 250 words per minute";
 
 
 
@@ -145,7 +149,7 @@ function App() {
           value={yearInput}
           onChange={(e) => setYearInput(e.target.value)}
         >
-          <option value="">-- Choose a Year --</option>
+          <option value="">...</option>
           {years.map((year) => (
             <option key={year} value={year}>{year}</option>
           ))}
@@ -153,13 +157,18 @@ function App() {
       </div>
 
       <div className="input-group">
-        <label htmlFor="wordcount-input">Word Count</label>
+        <label htmlFor="wordcount-input">
+          Word Count
+          <span className="wordcount-icon"><img src={infoIcon} alt="Info" className="info-icon-image" />
+            <span className="wordcount-icon-text">{wordcountIconText}</span>
+          </span>
+        </label>
         <select
           id="wordcount-input"
           value={wordcountInput}
           onChange={(e) => setWordcountInput(e.target.value)}
         >
-          <option value="">-- Choose a Word Count --</option>
+          <option value="">...</option>
           {wordCounts.map((val) => (
             <option key={val} value={val}>{val}</option>
           ))}
