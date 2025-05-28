@@ -58,3 +58,14 @@ textarea {
   border-radius: 6px;
   font-size: 1rem;
 }
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.logo-pulse {
+  animation: pulse 2s infinite ease-in-out;
+}
+

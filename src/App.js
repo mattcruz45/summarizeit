@@ -104,12 +104,12 @@ function App() {
         <img
           src={loading ? logoThink : logoDefault}
           alt="App Logo"
-          className="header-logo"
+          className={`header-logo ${loading ? 'logo-pulse' : ''}`}
         />
       </h1>
 
       <div className="input-group">
-        <label htmlFor="title-input">Book Title</label>
+        <label htmlFor="title-input">Book Title*</label>
         <textarea
           id="title-input"
           value={titleInput}
