@@ -85,3 +85,10 @@ to do
 add language option
 add option to give characters, important themes, etc
 add option for by chapter or section
+
+link to book on amazon with affiliate link
+
+
+
+[250, 500, 1000, 1250, 1500, 2000, 2500, 3000];
+1000, 1000, 2000, 2500, 3000, 4000, 5000, 6000
