@@ -93,4 +93,5 @@ link to book on amazon with affiliate link
 [250, 500, 1000, 1250, 1500, 2000, 2500, 3000];
 1000, 1000, 2000, 2500, 3000, 4000, 5000, 6000
 
-page 
+page for summarizing text in links
+page for summarizing text in attachments

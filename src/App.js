@@ -20,7 +20,7 @@ function App() {
 
   const [requiredFields, setRequiredFields] = useState(false); //see if all required fields are filled in
 
-  const wordcountIconText = "Default value is 250 words.\nThe average person reads 250 words per minute.\nFor a detailed summary, we recommend 1000 words.";
+  const wordcountIconText = "Default value is 250 words.\nThe average person reads 250 words per minute.\nFor a short detailed summary, we recommend 500 words.";
 
 
 
