@@ -12,7 +12,7 @@ function App() {
   const [authorInput, setAuthorInput] = useState('');
   const [yearInput, setYearInput] = useState('');
   const [chapterInput, setChapterInput] = useState('');
-  const [wordcountInput, setWordcountInput] = useState('');
+  let [wordcountInput, setWordcountInput] = useState('');
 
   const [apiResponse, setApiResponse] = useState('');
 
@@ -20,12 +20,12 @@ function App() {
 
   const [requiredFields, setRequiredFields] = useState(false); //see if all required fields are filled in
 
-  const wordcountIconText = "Default value is 500 words\nThe average person reads 250 words per minute";
+  const wordcountIconText = "Default value is 250 words.\nThe average person reads 250 words per minute.";
 
 
 
   // Generate years from 1700 to 2030
-  const years = Array.from({ length: 2030 - 1700 + 1 }, (_, i) => 1700 + i);
+  const years = Array.from({ length: 2030 - 1700 + 1 }, (_, i) => 2030 - i);
   const wordCounts = [100, 250, 500, 1000, 1250, 1500, 2000, 2500, 3000];
   const handleSubmit = async () => {
     setRequiredFields(true);
@@ -39,11 +39,13 @@ function App() {
     console.log('Year:', yearInput);
     console.log('Chapter:', chapterInput);
     console.log('Wordcount:', wordcountInput);
-    let maxTokens = parseInt(wordcountInput, 10) * 2; // doubles for max tokens on 4o-mini
 
-    if (Number.isInteger(maxTokens)) {
-      maxTokens = 1000;
+    if (!wordcountInput) {
+      wordcountInput = 250;
+      console.log("Missing Wordcount ", wordcountInput)
     }
+
+    const maxTokens = wordcountInput * 2; // doubles for max tokens on 4o-mini
 
     console.log('Max Tokens:', maxTokens);
 
@@ -68,7 +70,7 @@ function App() {
       chatPrompt += `Only give a summary of chapter(s) ${chapterInput}. `
     }
     if (wordcountInput) {
-      chatPrompt += `The in-depth summary needs to be about ${wordcountInput} words. Break it into the following sections: Introduction, Plot Overview, Character Arcs, Major Themes, and Conclusion but also do not include headers such as "Introduction", "Summary", or "Plot Overview" in the actual response.. `
+      chatPrompt += `The in-depth summary needs to be about ${wordcountInput} words. Break it into the following sections: Introduction, Plot Overview, Character Arcs, Major Themes, and Conclusion but also do not include headers such as "Introduction", "Summary", or "Plot Overview" in the actual response. `
     }
 
     try {
@@ -113,7 +115,7 @@ function App() {
       </h1>
 
       <div className="input-group">
-        <label htmlFor="title-input">Book Title*</label>
+        <label htmlFor="title-input">Title*</label>
         <textarea
           id="title-input"
           value={titleInput}
@@ -176,14 +178,14 @@ function App() {
       </div>
 
       <div className="input-group">
-        <button onClick={handleSubmit} disabled={loading}>
+        <button onClick={handleSubmit} disabled={loading} id="submit-button">
           {loading ? 'Thinking...' : requiredFields && !titleInput.trim() ? 'Fill in Title' : 'Submit'}
         </button>
       </div>
 
     {apiResponse && (
       <div className="api-response">
-        <h3>Summary:</h3>
+        <h3> </h3> 
       <p>{apiResponse}</p>
     </div>
     )}
