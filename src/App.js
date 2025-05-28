@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import './App.css';
+import axios from 'axios';
+import logoDefault from './images/summarizelogo.png';
+import logoThink from './images/summarizethink.png';
+
 
 function App() {
   const [titleInput, setTitleInput] = useState('');
@@ -12,32 +16,97 @@ function App() {
 
   const [loading, setLoading] = useState(false); //used in api
 
+  const [requiredFields, setRequiredFields] = useState(false); //see if all required fields are filled in
+
+
 
   // Generate years from 1700 to 2030
   const years = Array.from({ length: 2030 - 1700 + 1 }, (_, i) => 1700 + i);
   const wordCounts = [100, 250, 500, 1000, 1250, 1500, 2000, 2500, 3000];
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    setRequiredFields(true);
+
+    if (!titleInput.trim()) {
+      return;
+    }
+
     console.log('Title:', titleInput);
     console.log('Author:', authorInput);
     console.log('Year:', yearInput);
     console.log('Chapter:', chapterInput);
     console.log('Wordcount:', wordcountInput);
-    alert('Submitted!');
+    let maxTokens = parseInt(wordcountInput, 10) * 2; // doubles for max tokens on 4o-mini
+
+    if (Number.isInteger(maxTokens)) {
+      maxTokens = 1000;
+    }
+
+    console.log('Max Tokens:', maxTokens);
+
     setApiResponse('');
+
+    const key = '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'
 
     //api stuff
     setLoading(true);
-    const chatPrompt = "Create a truthful summary of the book ${titleInput}"
+    let chatPrompt = `Besides this upcoming summary, do not include anything else in your response, do not use any markdown or formatting symbols like ###, **, or bullet points. Just use plain section titles and paragraphs. Be thorough in each section, but also do not include headers such as "Introduction", "Summary", or "Plot Overview" in the actual response. Create a truthful summary of the book ${titleInput}. ` //theme, charcters, make it deep summary prompt
+    //create something that edits "max tokens" to be in line with detail/wordcount
+
+    //engineering the prompt based on filled in inputs
+
+    if (authorInput) {
+      chatPrompt += `This book is written by ${authorInput}. `
+    }
+    if (yearInput) {
+      chatPrompt += `Published in ${yearInput}. `
+    }
+    if (chapterInput) {
+      chatPrompt += `Only give a summary of chapter(s) ${chapterInput}. `
+    }
+    if (wordcountInput) {
+      chatPrompt += `The in-depth summary needs to be about ${wordcountInput} words. Break it into the following sections: Introduction, Plot Overview, Character Arcs, Major Themes, and Conclusion but also do not include headers such as "Introduction", "Summary", or "Plot Overview" in the actual response.. `
+    }
+
+    try {
+      const response = await axios.post(
+        'https://api.openai.com/v1/chat/completions',
+        {
+          model: 'gpt-4o-mini',
+          messages: [{ role: 'user', content: chatPrompt }],
+          max_tokens: maxTokens
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${key}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      console.log('OpenAI Prompt:', chatPrompt); // 👈 Add this - checks the prompt
 
 
-
-    setApiResponse('Here is the response text you got! at end of handleSubmit'); // get back from api
+      const reply = response.data.choices[0].message.content;
+      setApiResponse(reply);
+    } catch (error) {
+      console.error('OpenAI Error:', error);
+      setApiResponse('Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
 
   return (
     <div className="app-container">
-      <h1>SummarizeIt</h1>
+      <h1>
+        SummarizeIt{' '}
+        <img
+          src={loading ? logoThink : logoDefault}
+          alt="App Logo"
+          className="header-logo"
+        />
+      </h1>
 
       <div className="input-group">
         <label htmlFor="title-input">Book Title</label>
@@ -45,7 +114,7 @@ function App() {
           id="title-input"
           value={titleInput}
           onChange={(e) => setTitleInput(e.target.value)}
-          placeholder="Diary of a Wimpy Kid..."
+          placeholder="..."
         />
       </div>
 
@@ -55,7 +124,17 @@ function App() {
           id="author-input"
           value={authorInput}
           onChange={(e) => setAuthorInput(e.target.value)}
-          placeholder="Jeff Kinney..."
+          placeholder="..."
+        />
+      </div>
+
+      <div className="input-group">
+        <label htmlFor="chapter-input">Chapter(s)</label>
+        <textarea
+          id="chapter-input"
+          value={chapterInput}
+          onChange={(e) => setChapterInput(e.target.value)}
+          placeholder="..."
         />
       </div>
 
@@ -74,16 +153,6 @@ function App() {
       </div>
 
       <div className="input-group">
-        <label htmlFor="chapter-input">Chapter/Section</label>
-        <textarea
-          id="chapter-input"
-          value={chapterInput}
-          onChange={(e) => setChapterInput(e.target.value)}
-          placeholder="Chapter 12..."
-        />
-      </div>
-
-      <div className="input-group">
         <label htmlFor="wordcount-input">Word Count</label>
         <select
           id="wordcount-input"
@@ -98,12 +167,14 @@ function App() {
       </div>
 
       <div className="input-group">
-        <button onClick={() => handleSubmit()}>Submit</button>
-    </div>
+        <button onClick={handleSubmit} disabled={loading}>
+          {loading ? 'Thinking...' : requiredFields && !titleInput.trim() ? 'Fill in Title' : 'Submit'}
+        </button>
+      </div>
 
     {apiResponse && (
       <div className="api-response">
-        <h3>Result:</h3>
+        <h3>Summary:</h3>
       <p>{apiResponse}</p>
     </div>
     )}
