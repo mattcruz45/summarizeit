@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/summarizeit/static/css/main.e3f13878.css",
+    "main.js": "/summarizeit/static/js/main.6fc7bc00.js",
+    "static/js/453.c4986475.chunk.js": "/summarizeit/static/js/453.c4986475.chunk.js",
+    "static/media/summarizethink.png": "/summarizeit/static/media/summarizethink.fc2d4c49e813fca6b5de.png",
+    "static/media/summarizelogo.png": "/summarizeit/static/media/summarizelogo.f7297270ddddd3bcb55f.png",
+    "index.html": "/summarizeit/index.html",
+    "main.e3f13878.css.map": "/summarizeit/static/css/main.e3f13878.css.map",
+    "main.6fc7bc00.js.map": "/summarizeit/static/js/main.6fc7bc00.js.map",
+    "453.c4986475.chunk.js.map": "/summarizeit/static/js/453.c4986475.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e3f13878.css",
+    "static/js/main.6fc7bc00.js"
+  ]
+}
