@@ -95,3 +95,5 @@ link to book on amazon with affiliate link
 
 page for summarizing text in links
 page for summarizing text in attachments
+
+place for personal input - "return summary in italiano" "speak as yoda" "rely heavily on the theme of friendship" etc.
