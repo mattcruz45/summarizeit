@@ -55,7 +55,7 @@ function App() {
 
     setApiResponse('');
 
-    const key = 'you thought';
+    const key = process.env.REACT_APP_OPENAI_KEY;
 
     //api stuff
     setLoading(true);
