@@ -48,7 +48,7 @@ function App() {
       console.log("Wordcount ", wordcountInput)
     }
 
-    const maxTokens = wordcountInput * 2; // doubles for max tokens on 4o-mini
+    //const maxTokens = wordcountInput * 2; // doubles for max tokens on 4o-mini
 
     //console.log('Max Tokens:', maxTokens);
 
@@ -89,6 +89,7 @@ function App() {
       const response = await client.responses.create({
         model: "gpt-5",
         input: chatPrompt
+
       });
       console.log(response);
       const reply = response.output_text;
