@@ -54,7 +54,7 @@ function App() {
 
     setApiResponse('');
 
-   const key = process.env.REACT_APP_OPENAI_KEY;
+   const key = process.env.OPENAI_API_KEY;
 
     //api stuff
     setLoading(true);
