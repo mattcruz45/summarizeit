@@ -54,8 +54,7 @@ function App() {
 
     setApiResponse('');
 
-   //const key = process.env.REACT_APP_OPENAI_KEY;
-    const key = "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";
+   const key = process.env.REACT_APP_OPENAI_KEY;
 
     //api stuff
     setLoading(true);
