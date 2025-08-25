@@ -55,7 +55,7 @@ function App() {
 
     setApiResponse('');
 
-    const key = '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';
+    const key = 'you thought';
 
     //api stuff
     setLoading(true);
