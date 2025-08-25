@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import './App.css';
-import axios from 'axios';
 import logoDefault from './images/summarizelogo.png';
 import logoThink from './images/summarizethink.png';
 import infoIcon from './images/infoicon.png';
-
+import OpenAI from "openai";
 
 
 function App() {
@@ -55,7 +54,8 @@ function App() {
 
     setApiResponse('');
 
-    const key = process.env.REACT_APP_OPENAI_KEY;
+   //const key = process.env.REACT_APP_OPENAI_KEY;
+    const key = "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";
 
     //api stuff
     setLoading(true);
@@ -83,31 +83,30 @@ function App() {
 
     console.log(chatPrompt);
 
+    const client = new OpenAI({apiKey: key, dangerouslyAllowBrowser: true});
+
     try {
-      const response = await axios.post(
-        'https://api.openai.com/v1/chat/completions',
-        {
-          model: 'gpt-4o-mini',
-          messages: [{ role: 'user', content: chatPrompt }],
-          max_tokens: maxTokens
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${key}`,
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-
-      //console.log('OpenAI Prompt:', chatPrompt); // 👈 Add this - checks the prompt
-
-
-      const reply = response.data.choices[0].message.content;
+      const response = await client.responses.create({
+        model: "gpt-5",
+        input: chatPrompt
+      });
+      console.log(response);
+      const reply = response.output_text;
       console.log("Sir Squire Squilliam Shakespeare has broughteth thou thy summary...");
+      console.log(reply);
       setApiResponse(reply);
     } catch (error) {
-      console.error('OpenAI Error:', error);
-      setApiResponse('Something went wrong. Please try again.');
+      console.error('Full error:', error);
+      console.error('Error response:', error.response?.data);
+      console.error('Error status:', error.response?.status);
+      
+      if (error.response?.status === 401) {
+        setApiResponse('Invalid API key. Please check your OpenAI API key.');
+      } else if (error.response?.status === 404) {
+        setApiResponse('Model not found. The model might not be available.');
+      } else {
+        setApiResponse(`Error: ${error.response?.data?.error?.message || 'Something went wrong'}`);
+      }
     } finally {
       setLoading(false);
     }
