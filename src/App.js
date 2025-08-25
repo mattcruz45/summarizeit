@@ -54,7 +54,7 @@ function App() {
 
     setApiResponse('');
 
-   const key = process.env.OPENAI_API_KEY;
+   const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
     //api stuff
     setLoading(true);
@@ -82,7 +82,7 @@ function App() {
 
     console.log(chatPrompt);
 
-    const client = new OpenAI({apiKey: key, dangerouslyAllowBrowser: true});
+    const client = new OpenAI({apiKey: OPENAI_API_KEY, dangerouslyAllowBrowser: true});
 
     try {
       const response = await client.responses.create({
